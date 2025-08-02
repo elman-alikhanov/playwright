@@ -79,6 +79,21 @@ const elements: Elements[] = [
     locator: (page: Page): Locator => page.getByRole('button', { name: 'Search (Ctrl+K)' }),
     name: 'Search input',
   },
+  {
+    locator: (page: Page): Locator =>
+      page.getByRole('heading', { name: 'Playwright enables reliable' }),
+    name: 'Title',
+    text: 'Playwright enables reliable end-to-end testing for modern web apps.',
+  },
+  {
+    locator: (page: Page): Locator => page.getByRole('link', { name: 'Get started' }),
+    name: 'Get started button',
+    text: 'Get started',
+    attribute: {
+      type: 'href',
+      value: '/docs/intro',
+    },
+  },
 ];
 
 test.describe('main page tests', () => {
@@ -110,22 +125,5 @@ test.describe('main page tests', () => {
         await expect.soft(locator(page)).toHaveAttribute(attribute?.type, attribute?.value);
       });
     }
-  });
-
-  test('Checking title h1', async ({ page }) => {
-    await expect
-      .soft(page.getByRole('heading', { name: 'Playwright enables reliable' }))
-      .toBeVisible();
-    await expect
-      .soft(page.locator('h1'))
-      .toContainText('Playwright enables reliable end-to-end testing for modern web apps.');
-  });
-
-  test('Checking button "Get Started" ', async ({ page }) => {
-    await expect.soft(page.getByRole('link', { name: 'Get started' })).toBeVisible();
-    await expect.soft(page.getByRole('link', { name: 'Get started' })).toContainText('Get started');
-    await expect
-      .soft(page.getByRole('link', { name: 'Get started' }))
-      .toHaveAttribute('href', '/docs/intro');
   });
 });
