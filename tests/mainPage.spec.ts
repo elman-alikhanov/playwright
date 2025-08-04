@@ -96,6 +96,8 @@ const elements: Elements[] = [
   },
 ];
 
+const lightMods = ['light', 'dark'];
+
 test.describe('main page tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('https://playwright.dev/');
@@ -125,5 +127,13 @@ test.describe('main page tests', () => {
         await expect.soft(locator(page)).toHaveAttribute(attribute?.type, attribute?.value);
       });
     }
+  });
+  lightMods.forEach((value) => {
+    test(`Checking style activity ${value} mode`, async ({ page }) => {
+      await page.evaluate((value) => {
+        document.querySelector('html')?.setAttribute('data-theme', value);
+      }, value);
+      await expect(page).toHaveScreenshot(`pageWith${value}Mode.png`);
+    });
   });
 });
